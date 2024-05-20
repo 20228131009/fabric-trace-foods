@@ -1,9 +1,17 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-
+    <el-form
+      ref="loginForm"
+      :model="loginForm"
+      :rules="loginRules"
+      class="login-form"
+      auto-complete="on"
+      label-position="left"
+    >
       <div class="title-container">
-        <h3 class="title">基于区块链的农产品溯源系统</h3>
+        <h3 class="title" style="color: black">
+          基于区块链的农产品溯源与预警系统
+        </h3>
       </div>
       <div v-show="isLoginPage">
         <el-form-item prop="username">
@@ -37,11 +45,25 @@
             @keyup.enter.native="handleLogin"
           />
           <span class="show-pwd" @click="showPwd">
-            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+            <svg-icon
+              :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
+            />
           </span>
         </el-form-item>
-        <el-button :loading="loading" type="info" style="width:20%;margin-bottom:30px;" @click="handleRegister">注册</el-button>
-        <el-button :loading="loading" type="primary" style="width:30%;margin-bottom:30px; float: right" @click.native.prevent="handleLogin">登录</el-button>
+        <el-button
+          :loading="loading"
+          type="info"
+          style="width: 20%; margin-bottom: 30px"
+          @click="handleRegister"
+          >注册</el-button
+        >
+        <el-button
+          :loading="loading"
+          type="primary"
+          style="width: 30%; margin-bottom: 30px; float: right"
+          @click.native.prevent="handleLogin"
+          >登录</el-button
+        >
       </div>
       <div v-show="!isLoginPage">
         <el-form-item prop="username">
@@ -68,10 +90,12 @@
             placeholder="请输入密码"
             name="password"
             auto-complete="on"
-            style="color: white !important;"
+            style="color: white !important"
           />
           <span class="show-pwd" @click="showPwd">
-            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+            <svg-icon
+              :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
+            />
           </span>
         </el-form-item>
         <el-form-item prop="password2">
@@ -86,7 +110,9 @@
             :type="passwordType"
           />
           <span class="show-pwd" @click="showPwd">
-            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+            <svg-icon
+              :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
+            />
           </span>
         </el-form-item>
         <el-form-item style="width: 200px">
@@ -99,125 +125,147 @@
             />
           </el-select>
         </el-form-item>
-        <el-button :loading="loading" type="info" style="width:20%;margin-bottom:30px;" @click="handleRegister">返回</el-button>
-        <el-button :loading="loading" type="primary" style="width:30%;margin-bottom:30px; float: right" @click.native.prevent="submitRegister">提交注册</el-button>
+        <el-button
+          :loading="loading"
+          type="info"
+          style="width: 20%; margin-bottom: 30px"
+          @click="handleRegister"
+          >返回</el-button
+        >
+        <el-button
+          :loading="loading"
+          type="primary"
+          style="width: 30%; margin-bottom: 30px; float: right"
+          @click.native.prevent="submitRegister"
+          >提交注册</el-button
+        >
       </div>
       <!-- <div class="tips">
         <span style="margin-right:20px;">提示：可以放一些提示</span>
       </div> -->
-
     </el-form>
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'Login',
+  name: "Login",
   data() {
     return {
       loginForm: {
-        username: '',
-        password: ''
+        username: "",
+        password: "",
       },
       loginRules: {
         username: [{ required: true }],
-        password: [{ required: true }]
+        password: [{ required: true }],
       },
       loading: false,
-      passwordType: 'password',
+      passwordType: "password",
       redirect: undefined,
       isLoginPage: true,
       registerForm: {
-        username: '',
-        password: '',
-        password2: '',
-        userType: ''
+        username: "",
+        password: "",
+        password2: "",
+        userType: "",
       },
-      options: [{
-        value: '种植户',
-        label: '种植户'
-      }, {
-        value: '工厂',
-        label: '工厂'
-      }, {
-        value: '运输司机',
-        label: '运输司机'
-      }, {
-        value: '商店',
-        label: '商店'
-      }, {
-        value: '消费者',
-        label: '消费者'
-      }]
-    }
+      options: [
+        {
+          value: "种植户",
+          label: "种植户",
+        },
+        {
+          value: "工厂",
+          label: "工厂",
+        },
+        {
+          value: "运输司机",
+          label: "运输司机",
+        },
+        {
+          value: "商店",
+          label: "商店",
+        },
+        {
+          value: "消费者",
+          label: "消费者",
+        },
+      ],
+    };
   },
   watch: {
     $route: {
-      handler: function(route) {
-        this.redirect = route.query && route.query.redirect
+      handler: function (route) {
+        this.redirect = route.query && route.query.redirect;
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   methods: {
     showPwd() {
-      if (this.passwordType === 'password') {
-        this.passwordType = ''
+      if (this.passwordType === "password") {
+        this.passwordType = "";
       } else {
-        this.passwordType = 'password'
+        this.passwordType = "password";
       }
       this.$nextTick(() => {
-        this.$refs.password.focus()
-      })
+        this.$refs.password.focus();
+      });
     },
     handleLogin() {
-      this.loading = true
-      this.$store.dispatch('user/login', this.loginForm).then(() => {
-        this.$router.push({ path: this.redirect || '/' })
-        this.loading = false
-      }).catch(() => {
-        this.loading = false
-      })
+      this.loading = true;
+      this.$store
+        .dispatch("user/login", this.loginForm)
+        .then(() => {
+          this.$router.push({ path: this.redirect || "/" });
+          this.loading = false;
+        })
+        .catch(() => {
+          this.loading = false;
+        });
     },
     handleRegister() {
       // 切换登录注册
-      this.isLoginPage = !this.isLoginPage
+      this.isLoginPage = !this.isLoginPage;
     },
     submitRegister() {
       if (this.registerForm.password !== this.registerForm.password2) {
-        this.$message.error('两次密码不一致')
-        return
+        this.$message.error("两次密码不一致");
+        return;
       }
       const loading = this.$loading({
         lock: true,
-        text: '注册中...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
-      })
-      this.$store.dispatch('user/register', this.registerForm).then(response => {
-        this.$router.push({ path: this.redirect || '/' })
-        this.loading = false
-        this.$message({
-          message: '注册成功，链上交易ID：' + response.txid,
-          type: 'success'
+        text: "注册中...",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
+      this.$store
+        .dispatch("user/register", this.registerForm)
+        .then((response) => {
+          this.$router.push({ path: this.redirect || "/" });
+          this.loading = false;
+          this.$message({
+            message: "注册成功，链上交易ID：" + response.txid,
+            type: "success",
+          });
+          loading.close();
+          this.handleRegister();
         })
-        loading.close()
-        this.handleRegister()
-      }).catch(() => {
-        loading.close()
-      })
-    }
-  }
-}
+        .catch(() => {
+          loading.close();
+        });
+    },
+  },
+};
 </script>
 
 <style lang="scss">
 /* 修复input 背景不协调 和光标变色 */
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
-$bg:#283443;
-$light_gray:#fff;
+$bg: #283443;
+$light_gray: #fff;
 $cursor: #fff;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
@@ -229,7 +277,7 @@ $cursor: #fff;
 /* reset element-ui css */
 .login-container {
   // 添加背景图片
-  background-image: url("../../assets/login_images/nature.jpg");
+  background-image: url("../../assets/login_images/food.jpg");
   background-size: cover;
   background-position: center;
 
@@ -264,9 +312,9 @@ $cursor: #fff;
 </style>
 
 <style lang="scss" scoped>
-$bg:#2d3a4b;
-$dark_gray:#889aa4;
-$light_gray:#eee;
+$bg: #2d3a4b;
+$dark_gray: #889aa4;
+$light_gray: #eee;
 
 .login-container {
   min-height: 100%;

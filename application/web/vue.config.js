@@ -1,6 +1,6 @@
-'use strict'
-const path = require('path')
-const defaultSettings = require('./src/settings.js')
+'use strict'//启用严格模式，提供更严格的语法检查
+const path = require('path')//引入 Node.js 的路径模块，用于处理文件路径。
+const defaultSettings = require('./src/settings.js')//引入项目中的 settings.js 文件，用于获取默认设置。
 
 function resolve(dir) {
   return path.join(__dirname, dir)

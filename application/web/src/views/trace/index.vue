@@ -1,17 +1,35 @@
 <template>
   <div class="trace-container">
-    <el-input v-model="input" placeholder="请输入溯源码查询" style="width: 300px;margin-right: 15px;" />
+    <el-input
+      v-model="input"
+      placeholder="请输入溯源码查询"
+      style="width: 300px; margin-right: 15px"
+    />
     <el-button type="primary" plain @click="FruitInfo"> 查询 </el-button>
-    <el-button type="success" plain @click="AllFruitInfo"> 获取所有农产品信息 </el-button>
-    <el-table
-      :data="tracedata"
-      style="width: 100%"
-    >
+    <el-button type="success" plain @click="AllFruitInfo">
+      获取所有农产品信息
+    </el-button>
+    <el-table :data="tracedata" style="width: 100%">
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
-            <div><span class="trace-text" style="color: #67C23A;">农产品信息</span></div>
-            <el-form-item label="农产品名称：">
+            <div>
+              <span class="trace-text" style="color: #67c23a">农产品信息</span>
+            </div>
+            <div>
+              <div>
+                <el-image
+                  style="width: 200px; height: 200px; object-fit: cover"
+                  :src="
+                    'http://127.0.0.1:9090/images/' +
+                    props.row.traceability_code +
+                    '.jpg'
+                  "
+                  fit="fill"
+                ></el-image>
+              </div>
+            </div>
+            <el-form-item label="食品名称：">
               <span>{{ props.row.farmer_input.fa_fruitName }}</span>
             </el-form-item>
             <el-form-item label="产地：">
@@ -32,7 +50,9 @@
             <el-form-item label="区块链交易时间：">
               <span>{{ props.row.farmer_input.fa_timestamp }}</span>
             </el-form-item>
-            <div><span class="trace-text" style="color: #409EFF;">工厂信息</span></div>
+            <div>
+              <span class="trace-text" style="color: #409eff">工厂信息</span>
+            </div>
             <el-form-item label="商品名称：">
               <span>{{ props.row.factory_input.fac_productName }}</span>
             </el-form-item>
@@ -54,7 +74,11 @@
             <el-form-item label="区块链交易时间：">
               <span>{{ props.row.factory_input.fac_timestamp }}</span>
             </el-form-item>
-            <div><span class="trace-text" style="color: #E6A23C;">物流轨迹信息</span></div>
+            <div>
+              <span class="trace-text" style="color: #e6a23c"
+                >物流轨迹信息</span
+              >
+            </div>
             <el-form-item label="姓名：">
               <span>{{ props.row.driver_input.dr_name }}</span>
             </el-form-item>
@@ -76,7 +100,9 @@
             <el-form-item label="区块链交易时间：">
               <span>{{ props.row.driver_input.dr_timestamp }}</span>
             </el-form-item>
-            <div><span class="trace-text" style="color: #909399;">商店信息</span></div>
+            <div>
+              <span class="trace-text" style="color: #909399">商店信息</span>
+            </div>
             <el-form-item label="入库时间：">
               <span>{{ props.row.shop_input.sh_storeTime }}</span>
             </el-form-item>
@@ -101,14 +127,8 @@
           </el-form>
         </template>
       </el-table-column>
-      <el-table-column
-        label="溯源码"
-        prop="traceability_code"
-      />
-      <el-table-column
-        label="农产品名称"
-        prop="farmer_input.fa_fruitName"
-      />
+      <el-table-column label="溯源码" prop="traceability_code" />
+      <el-table-column label="农产品名称" prop="farmer_input.fa_fruitName" />
       <el-table-column
         label="农产品采摘时间"
         prop="farmer_input.fa_pickingTime"
@@ -118,72 +138,85 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { getFruitInfo, getFruitList, getAllFruitInfo, getFruitHistory } from '@/api/trace'
+import { mapGetters } from "vuex";
+import {
+  getFruitInfo,
+  getFruitList,
+  getAllFruitInfo,
+  getFruitHistory,
+  getPic,
+} from "@/api/trace";
 
 export default {
-  name: 'Trace',
+  name: "Trace",
   data() {
     return {
       tracedata: [],
       loading: false,
-      input: ''
-    }
+      input: "",
+      imageSrc: "",
+      // traceability_code: this.traceabilityCode(),
+      // // 使用函数调用获取 imagePath
+      // imagePath:
+      //   "http://localhost:9090/dist/upload/" + this.traceabilityCode() + ".jpg",
+    };
   },
   computed: {
-    ...mapGetters([
-      'name',
-      'userType'
-    ])
+    ...mapGetters(["name", "userType"]),
+    ...mapGetters(["selectedPhotos"]),
+    // traceabilityCode() {
+    //   // 假设 traceability_code 是从 tracedata 中的某个字段获取的
+    //   // 如果这里不适用，请替换成合适的字段路径
+    //   return this.tracedata.traceability_code; // 由于是数组，这里使用了join来合并
+    // },
   },
   created() {
-    getFruitList().then(res => {
-      this.tracedata = JSON.parse(res.data)
-    })
+    getFruitList().then((res) => {
+      this.tracedata = JSON.parse(res.data);
+    });
   },
   methods: {
     AllFruitInfo() {
-      getAllFruitInfo().then(res => {
-        this.tracedata = JSON.parse(res.data)
-      })
+      getAllFruitInfo().then((res) => {
+        this.tracedata = JSON.parse(res.data);
+      });
     },
     FruitHistory() {
-      getFruitHistory().then(res => {
+      getFruitHistory().then((res) => {
         // console.log(res)
-      })
+      });
     },
     FruitInfo() {
-      var formData = new FormData()
-      formData.append('traceability_code', this.input)
-      getFruitInfo(formData).then(res => {
+      var formData = new FormData();
+      formData.append("traceability_code", this.input);
+      getFruitInfo(formData).then((res) => {
         if (res.code === 200) {
           // console.log(res)
-          this.tracedata = []
-          this.tracedata[0] = JSON.parse(res.data)
-          return
+          this.tracedata = [];
+          this.tracedata[0] = JSON.parse(res.data);
+          return;
         } else {
-          this.$message.error(res.message)
+          this.$message.error(res.message);
         }
-      })
-    }
-  }
-}
+      });
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-
 .demo-table-expand {
-    font-size: 0;
-  }
-  .demo-table-expand label {
-    width: 90px;
-    color: #99a9bf;
-  }
-  .demo-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-    width: 50%;
-  }
+  font-size: 0;
+}
+.demo-table-expand label {
+  width: 90px;
+  color: #99a9bf;
+}
+.demo-table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 50%;
+}
 .trace {
   &-container {
     margin: 30px;

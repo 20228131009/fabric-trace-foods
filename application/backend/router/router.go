@@ -24,6 +24,7 @@ func SetupRouter() *gin.Engine {
 	}))
 	// 设置静态文件目录
 	r.Static("/static", "./dist/static")
+	r.Static("/images", "./dist/upload")
 	r.LoadHTMLGlob("dist/*.html")
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(200, "index.html", nil)
@@ -52,5 +53,8 @@ func SetupRouter() *gin.Engine {
 	r.POST("/getAllFruitInfo", middleware.JWTAuthMiddleware(), con.GetAllFruitInfo)
 	// 获取农产品上链历史(溯源)
 	r.POST("/getFruitHistory", middleware.JWTAuthMiddleware(), con.GetFruitHistory)
+	//获取照片
+	// r.POST("/getpic", middleware.JWTAuthMiddleware(), con.GetPic)
+
 	return r
 }

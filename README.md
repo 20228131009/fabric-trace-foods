@@ -131,11 +131,3 @@
 
 
 
-
-
-
-
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=TrueTechLabs/fabric-trace&type=Date)](https://star-history.com/#TrueTechLabs/fabric-trace&Date)
